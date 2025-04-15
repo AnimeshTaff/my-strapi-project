@@ -608,6 +608,11 @@ export interface PluginReceipeRecipe extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    deleteAt: Schema.Attribute.DateTime;
+    deletedBy: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
     image: Schema.Attribute.Media<'images' | 'files'> &
       Schema.Attribute.Required;
     ingredients: Schema.Attribute.Blocks &
@@ -969,7 +974,6 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;

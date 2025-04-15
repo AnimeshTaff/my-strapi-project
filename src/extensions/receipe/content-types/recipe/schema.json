@@ -74,6 +74,14 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::receipe.product-type"
+    },
+    "deleteAt": {
+      "type": "datetime"
+    },
+    "deletedBy": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
     }
   }
 }

@@ -47,13 +47,42 @@ module.exports = {
     }
   },
 
+  // async delete(ctx) {
+  //   const { id } = ctx.params;
+  //   try {
+  //     await strapi.entityService.delete('plugin::receipe.recipe', id);
+  //     ctx.body = { message: 'Deleted successfully' };
+  //   } catch (err) {
+  //     ctx.throw(500, err);
+  //   }
+  // },
   async delete(ctx) {
     const { id } = ctx.params;
+    const user = ctx.state.user;
+  
     try {
-      await strapi.entityService.delete('plugin::receipe.recipe', id);
-      ctx.body = { message: 'Deleted successfully' };
+      // Make sure the recipe exists
+      const recipe = await strapi.entityService.findOne('plugin::receipe.recipe', id);
+  
+      if (!recipe) {
+        return ctx.notFound('Recipe not found');
+      }
+  
+      // Perform soft delete by updating deletedAt and deletedBy
+      const updatedRecipe = await strapi.entityService.update('plugin::receipe.recipe', id, {
+        data: {
+          deletedAt: new Date(),
+          deletedBy: user?.id || null,
+        },
+      });
+  
+      ctx.body = {
+        message: 'Soft deleted successfully',
+        recipe: updatedRecipe,
+      };
     } catch (err) {
       ctx.throw(500, err);
     }
-  },
+  }
+  
 };
