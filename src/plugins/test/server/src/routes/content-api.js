@@ -50,4 +50,22 @@ export default [
       auth: false,
     },
   },
+
+    // Meal Type Routes
+    {
+      method: 'GET',
+      path: '/meal-types',
+      handler: 'meal-type.findAll',
+      config: {
+        auth: false,
+      },
+    },
+    {
+      method: 'GET',
+      path: '/product-types',
+      handler: 'product-type.findAll',
+      config: {
+        auth: false,
+      },
+    },
 ];
