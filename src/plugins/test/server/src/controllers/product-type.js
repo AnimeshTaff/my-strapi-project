@@ -3,10 +3,9 @@
 module.exports = {
   async findAll(ctx) {
     try {
-      const productTypes = await strapi
-        .plugin('receipe')
-        .service('product-type')
-        .findAll(ctx.query);
+      const productTypes = await strapi.entityService.findMany('plugin::receipe.product-type', {
+        populate: '*',
+      });
       ctx.body = productTypes;
     } catch (err) {
       ctx.throw(500, err);
@@ -14,12 +13,11 @@ module.exports = {
   },
 
   async findOne(ctx) {
+    const { id } = ctx.params;
     try {
-      const { id } = ctx.params;
-      const productType = await strapi
-        .plugin('receipe')
-        .service('product-type')
-        .findOne(id, ctx.query);
+      const productType = await strapi.entityService.findOne('plugin::receipe.product-type', id, {
+        populate: '*',
+      });
       ctx.body = productType;
     } catch (err) {
       ctx.throw(500, err);

@@ -24,65 +24,62 @@ module.exports = {
     }
   },
 
-  async create(ctx) {
-    try {
-      const data = await strapi.entityService.create('plugin::receipe.recipe', {
-        data: ctx.request.body,
-      });
-      ctx.body = data;
-    } catch (err) {
-      ctx.throw(500, err);
-    }
-  },
-
-  async update(ctx) {
-    const { id } = ctx.params;
-    try {
-      const data = await strapi.entityService.update('plugin::receipe.recipe', id, {
-        data: ctx.request.body,
-      });
-      ctx.body = data;
-    } catch (err) {
-      ctx.throw(500, err);
-    }
-  },
-
-  // async delete(ctx) {
-  //   const { id } = ctx.params;
-  //   try {
-  //     await strapi.entityService.delete('plugin::receipe.recipe', id);
-  //     ctx.body = { message: 'Deleted successfully' };
-  //   } catch (err) {
-  //     ctx.throw(500, err);
-  //   }
-  // },
-  async delete(ctx) {
-    const { id } = ctx.params;
-    const user = ctx.state.user;
+  async findByMealTypeName(ctx) {
+    const { mealTypeName } = ctx.params;
   
     try {
-      // Make sure the recipe exists
-      const recipe = await strapi.entityService.findOne('plugin::receipe.recipe', id);
-  
-      if (!recipe) {
-        return ctx.notFound('Recipe not found');
-      }
-  
-      // Perform soft delete by updating deletedAt and deletedBy
-      const updatedRecipe = await strapi.entityService.update('plugin::receipe.recipe', id, {
-        data: {
-          deletedAt: new Date(),
-          deletedBy: user?.id || null,
+      const recipes = await strapi.entityService.findMany('plugin::receipe.recipe', {
+        filters: {
+          meal_types: {
+            name: mealTypeName,
+          },
         },
+        populate: '*',
       });
   
-      ctx.body = {
-        message: 'Soft deleted successfully',
-        recipe: updatedRecipe,
-      };
+      ctx.body = recipes;
+    } catch (err) {
+      ctx.throw(500, err);
+    }
+  },
+
+  async findByProductTypeName(ctx) {
+    const { productTypeName } = ctx.params;
+
+    try {
+      const recipes = await strapi.entityService.findMany('plugin::receipe.recipe', {
+        filters: {
+          receipe_product_type: {
+            name: productTypeName,
+          },
+        },
+        populate: '*',
+      });
+
+      ctx.body = recipes;
+    } catch (err) {
+      ctx.throw(500, err);
+    }
+  },
+
+  // Updated findByText method (Only filter by recipe name/title)
+  async findByText(ctx) {
+    const { text } = ctx.params; // The search text passed in the URL parameter
+  
+    try {
+      const recipes = await strapi.entityService.findMany('plugin::receipe.recipe', {
+        filters: {
+          // Only filtering by the recipe's title (name)
+          title: {
+            $contains: text,  // Filters recipes where the title contains the text
+          },
+        },
+        populate: '*',
+      });
+
+      ctx.body = recipes;
     } catch (err) {
       ctx.throw(500, err);
     }
   }
-  
 };

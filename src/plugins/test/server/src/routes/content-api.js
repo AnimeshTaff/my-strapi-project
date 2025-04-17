@@ -2,7 +2,6 @@ export default [
   {
     method: 'GET',
     path: '/',
-    // name of the controller file & the method.
     handler: 'controller.index',
     auth: false,
     config: {
@@ -10,9 +9,10 @@ export default [
     },
   },
 
+  // Recipe Routes
   {
     method: 'GET',
-    path: '/recipes',
+    path: '/allrecipes',
     handler: 'recipe.findAll',
     config: {
       auth: false,
@@ -27,45 +27,68 @@ export default [
     },
   },
   {
-    method: 'POST',
-    path: '/recipes',
-    handler: 'recipe.create',
+    method: 'GET',
+    path: '/recipe/getby-meal/:mealTypeName',
+    handler: 'recipe.findByMealTypeName',
+    config: {
+      auth: false,
+      policies: [],
+    },
+  },
+  {
+    method: 'GET',
+    path: '/recipe/getby-product/:productTypeName',
+    handler: 'recipe.findByProductTypeName',
+    config: {
+      auth: false,
+      policies: [],
+    },
+  },
+
+  // New route for filtering by recipe name (title)
+  {
+    method: 'GET',
+    path: '/recipe/getby-text/:text',
+    handler: 'recipe.findByText',
+    config: {
+      auth: false,
+      policies: [],
+    },
+  },
+
+  // Meal Type Routes
+  {
+    method: 'GET',
+    path: '/allmeal-types',
+    handler: 'meal-type.findAll',
     config: {
       auth: false,
     },
   },
   {
-    method: 'PUT',
-    path: '/recipes/:id',
-    handler: 'recipe.update',
-    config: {
-      auth: false,
-    },
-  },
-  {
-    method: 'DELETE',
-    path: '/recipes/:id',
-    handler: 'recipe.delete',
+    method: 'GET',
+    path: '/meal-types/:id',
+    handler: 'meal-type.findOne',
     config: {
       auth: false,
     },
   },
 
-    // Meal Type Routes
-    {
-      method: 'GET',
-      path: '/meal-types',
-      handler: 'meal-type.findAll',
-      config: {
-        auth: false,
-      },
+  // Product Type Routes
+  {
+    method: 'GET',
+    path: '/allproduct-types',
+    handler: 'product-type.findAll',
+    config: {
+      auth: false,
     },
-    {
-      method: 'GET',
-      path: '/product-types',
-      handler: 'product-type.findAll',
-      config: {
-        auth: false,
-      },
+  },
+  {
+    method: 'GET',
+    path: '/product-types/:id',
+    handler: 'product-type.findOne',
+    config: {
+      auth: false,
     },
+  },
 ];

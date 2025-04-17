@@ -8,4 +8,5 @@ module.exports = {
   async findOne(id, query) {
     return await strapi.entityService.findOne('plugin::receipe.product-type', id, query);
   },
-};
+
+}
