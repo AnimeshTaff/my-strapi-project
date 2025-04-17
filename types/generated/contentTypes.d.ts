@@ -540,7 +540,6 @@ export interface PluginReceipeMealType extends Struct.CollectionTypeSchema {
         };
       }>;
     publishedAt: Schema.Attribute.DateTime;
-    recipe: Schema.Attribute.Relation<'manyToOne', 'plugin::receipe.recipe'>;
     slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -634,8 +633,8 @@ export interface PluginReceipeRecipe extends Struct.CollectionTypeSchema {
       'oneToMany',
       'plugin::receipe.recipe'
     >;
-    meal_types: Schema.Attribute.Relation<
-      'oneToMany',
+    meal_type: Schema.Attribute.Relation<
+      'oneToOne',
       'plugin::receipe.meal-type'
     >;
     publishedAt: Schema.Attribute.DateTime;

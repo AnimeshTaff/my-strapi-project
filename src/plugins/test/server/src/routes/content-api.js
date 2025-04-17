@@ -56,6 +56,17 @@ export default [
     },
   },
 
+  // New route for filtering by both meal and product type
+  {
+    method: 'GET',
+    path: '/recipe/filter',
+    handler: 'recipe.filterByMealAndProductType',
+    config: {
+      auth: false,
+      policies: [],
+    },
+  },
+
   // Meal Type Routes
   {
     method: 'GET',

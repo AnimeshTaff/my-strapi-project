@@ -26,17 +26,17 @@ module.exports = {
 
   async findByMealTypeName(ctx) {
     const { mealTypeName } = ctx.params;
-  
+
     try {
       const recipes = await strapi.entityService.findMany('plugin::receipe.recipe', {
         filters: {
-          meal_types: {
+          meal_type: {
             name: mealTypeName,
           },
         },
         populate: '*',
       });
-  
+
       ctx.body = recipes;
     } catch (err) {
       ctx.throw(500, err);
@@ -62,16 +62,14 @@ module.exports = {
     }
   },
 
-  // Updated findByText method (Only filter by recipe name/title)
   async findByText(ctx) {
-    const { text } = ctx.params; // The search text passed in the URL parameter
-  
+    const { text } = ctx.params;
+
     try {
       const recipes = await strapi.entityService.findMany('plugin::receipe.recipe', {
         filters: {
-          // Only filtering by the recipe's title (name)
           title: {
-            $contains: text,  // Filters recipes where the title contains the text
+            $contains: text,
           },
         },
         populate: '*',
@@ -81,5 +79,35 @@ module.exports = {
     } catch (err) {
       ctx.throw(500, err);
     }
-  }
+  },
+
+  // Combined Filter (meal_type + product_type)
+  async filterByMealAndProductType(ctx) {
+    const { mealType, productType } = ctx.query;
+
+    const filters = {};
+
+    if (mealType) {
+      filters.meal_type = {
+        name: mealType,
+      };
+    }
+
+    if (productType) {
+      filters.receipe_product_type = {
+        name: productType,
+      };
+    }
+
+    try {
+      const recipes = await strapi.entityService.findMany('plugin::receipe.recipe', {
+        filters,
+        populate: '*',
+      });
+
+      ctx.body = recipes;
+    } catch (err) {
+      ctx.throw(500, err);
+    }
+  },
 };

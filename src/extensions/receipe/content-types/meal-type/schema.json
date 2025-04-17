@@ -28,12 +28,6 @@
       "type": "uid",
       "targetField": "name",
       "required": true
-    },
-    "recipe": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::receipe.recipe",
-      "inversedBy": "meal_types"
     }
   }
 }

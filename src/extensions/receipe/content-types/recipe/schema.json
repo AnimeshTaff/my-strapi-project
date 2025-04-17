@@ -64,11 +64,10 @@
         "files"
       ]
     },
-    "meal_types": {
+    "meal_type": {
       "type": "relation",
-      "relation": "oneToMany",
-      "target": "plugin::receipe.meal-type",
-      "mappedBy": "recipe"
+      "relation": "oneToOne",
+      "target": "plugin::receipe.meal-type"
     },
     "receipe_product_type": {
       "type": "relation",
