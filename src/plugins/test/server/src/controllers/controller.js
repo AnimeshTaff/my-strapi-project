@@ -3,6 +3,7 @@ const controller = ({ strapi }) => ({
     ctx.body = strapi
       .plugin('test')
       // the name of the service file & the method.
+      console.log('test')
       .service('service')
       .getWelcomeMessage();
   },
