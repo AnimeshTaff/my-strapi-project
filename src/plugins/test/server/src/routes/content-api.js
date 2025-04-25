@@ -102,4 +102,14 @@ export default [
       auth: false,
     },
   },
+
+  {
+    method: 'POST',
+    path: '/sendemail',
+    handler: 'mail.sendEmail',
+    config: {
+      policies: [],
+      auth: false, // change to true if you want token auth
+    },
+  },
 ];
